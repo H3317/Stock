@@ -1,0 +1,9 @@
+﻿string Title = "hellow";
+string Msg = "show";
+int sss = 1;
+int ddd;
+object tttt;
+object sr = null;
+bool bols;//fff
+//fffff
+bool bolt = true;//gggg

@@ -22,7 +22,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="Tb1" Grid.Column="0" Margin="5 2" Text="{Binding name}" IsEnabled="{Binding enable}"/>
+        <TextBox x:Name="Tb1" Grid.Column="0" Margin="5 2" Text="{Binding Name}" IsEnabled="{Binding enable}"/>
         <Button Name="BtnDownload" Grid.Row="0" Grid.Column="3" Margin="5 2" IsEnabled="{Binding Enable}"
                 IsDefault="True" Command="{Binding Getdata}" Content="获取"/>
         <DataGrid x:Name="Dg1" 

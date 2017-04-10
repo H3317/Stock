@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using Stock.Models;
 using Application = System.Windows.Application;
 using sy = System.Windows.Forms;
+using System.Collections;
 
 namespace Stock.GetBaseData
 {
@@ -223,6 +224,16 @@ namespace Stock.GetBaseData
                     //{
                     //}));
 
+                    string tableName = Name;
+                    if (DbHelperSqLite.Exists("select count(*) from sqlite_master where type='table' and name='BaseDataReceived_" + tableName + "'"))
+                    {
+                        if (DbHelperSqLite.Exists("select count(*) from BaseDataReceived_" + tableName + " where status = 1"))
+                        {
+                            Log.WriteLog("股票【" + tableName + "】的数据已获取，不必重新获取");
+                            return;
+                        }
+                    }
+
                     string url = "http://www.aigaogao.com/tools/history.html?s=" + Name;
                     Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                     {
@@ -253,14 +264,16 @@ namespace Stock.GetBaseData
                 if (tbs.Count == 8)
                 {
                     sy.HtmlElementCollection trs = tbs[7].GetElementsByTagName("TR");
+
+                    ArrayList list = new ArrayList();
                     for (int j = 1; j < trs.Count; j++)
                     {
                         sy.HtmlElementCollection tds = trs[j].GetElementsByTagName("TD");
                         if (tds.Count == 13)
                         {
-                            Detail.Add(new BaseDetail
+                            var bd = new BaseDetail
                             {
-                                Time = Pfun.StringtoDatetime1(tds[0].InnerText.Trim(),"MM/dd/yyyy").ToString("yyyy/MM/dd"),
+                                Time = Pfun.StringtoDatetime1(tds[0].InnerText.Trim(), "MM/dd/yyyy").ToString("yyyyMMdd"),
                                 Kp = Pfun.Stringtodouble1(tds[1].InnerText.Trim()),
                                 Zg = Pfun.Stringtodouble1(tds[2].InnerText.Trim()),
                                 Zd = Pfun.Stringtodouble1(tds[3].InnerText.Trim()),
@@ -273,8 +286,52 @@ namespace Stock.GetBaseData
                                 Gdc = Pfun.Stringtodouble1(tds[10].InnerText.Replace("%", "").Trim()),
                                 Sz = Pfun.Stringtodouble1(tds[11].InnerText.Trim()),
                                 Szl = Pfun.Stringtodouble1(tds[12].InnerText.Replace("%", "").Trim()),
-                            });
+                            };
+                            Detail.Add(bd);
+
+                            list.Add("insert into BaseData_" + Name + "(tradetime,kpjg,zgjg,zdjg,spjg,cjl,cjje,sd,sdbl) " +
+                                    "values ('" + bd.Time + "'," + bd.Kp +
+                                    "," + bd.Zg + "," + bd.Zd +
+                                    "," + bd.Sp + "," + bd.Cjl + "," + bd.Cjje + "," + bd.Sdl + "," + bd.Sdbl + ")");
+
                         }
+                    }
+
+                    if (list.Count > 0)
+                    {
+                        if (!DbHelperSqLite.Exists("select count(*) from sqlite_master where type='table' and name='BaseData_" + Name + "'"))
+                        {
+                            string tableText = (string)DbHelperSqLite.GetSingle("select table_text from need_createtable where Table_name = 'BaseData' Limit 1");
+                            if (tableText == null)
+                            {
+                                Log.WriteLog("need_createtable表中没有BaseData_表的创建代码");
+                                return;
+                            }
+                            tableText = tableText.Replace("XX", Name);
+                            DbHelperSqLite.ExecuteSql(tableText);
+                        }
+                        DbHelperSqLite.ExecuteSqlTran(list);
+
+                        if (!DbHelperSqLite.Exists("select count(*) from sqlite_master where type='table' and name='BaseDataReceived_" + Name + "'"))
+                        {
+                            string tableText = (string)DbHelperSqLite.GetSingle("select table_text from need_createtable where Table_name = 'BaseDataReceived' Limit 1");
+                            if (tableText == null)
+                            {
+                                Log.WriteLog("need_createtable表中没有BaseDataReceived表的创建代码");
+                                return;
+                            }
+                            tableText = tableText.Replace("XX", Name);
+                            DbHelperSqLite.ExecuteSql(tableText);
+                        }
+                        if (DbHelperSqLite.Exists("select count(*) from BaseDataReceived_" + Name))
+                        {
+                            DbHelperSqLite.ExecuteSql("update BaseDataReceived_" + Name + " set status = 1 where tradedate  ='" + DateTime.Now.ToString("yyyyMMdd") + "'");
+                        }
+                        else
+                        {
+                            DbHelperSqLite.ExecuteSql("insert into BaseDatareceived_" + Name + "(tradedate,status) values('" + DateTime.Now.ToString("yyyyMMdd") + "',1) ");
+                        }
+                        Log.WriteLog("股票【" + Name + "】的数据获取成功");
                     }
                 }
             }

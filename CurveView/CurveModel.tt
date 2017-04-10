@@ -1,0 +1,93 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+
+using GalaSoft.MvvmLight;
+
+namespace Stock.CurveView
+{
+    public class CurveModel : ObservableObject
+    {
+        public CurveModel()
+        {
+
+        }
+
+<#
+		StreamReader sr = File.OpenText(this.Host.ResolvePath("Variable.txt")); 
+		string nextLine; 
+		while ((nextLine = sr.ReadLine()) != null) 
+		{ 
+			if(nextLine.TrimStart().StartsWith("//"))
+			{
+#>
+		<#=nextLine#>
+<#
+				continue;
+			}
+			string v1 = nextLine.TrimEnd();
+			string[] lists1 = v1.Split('=');
+
+			string value = "";
+
+			if(lists1.Length == 2)
+			{
+				value = lists1[1];
+			}
+			string v2 = lists1[0].TrimEnd().TrimStart().TrimEnd(';');
+			string reamrk = "";
+			if(v2.IndexOf("//") > 0)
+			{
+				reamrk = v2.Split(new char[]{';'} ,2)[1];				
+				v2 = v2.Split(';')[0];
+			}
+			
+			string[] lists2 = v2.Split(' ');			
+			
+			string type;
+			string name;
+			if(lists2.Length > 1)
+			{
+				type = lists2[0];
+				name = lists2[lists2.Length - 1];
+				string defvalue = "null;";
+
+				if( type.ToLower() == "string" )
+				{
+					defvalue = "string.Empty;";
+				}
+				if( type.ToLower() == "int" || type.ToLower() == "double" || type.ToLower() == "float" ||
+						type.ToLower() == "short" || type.ToLower() == "uint" || type.ToLower() == "ushort" )
+				{
+					defvalue = "0;";
+				}
+				 if( type.ToLower() == "bool" ) 
+				 {
+					defvalue = "false;";
+				 }
+				 if(!String.IsNullOrEmpty(value))
+				 {
+					defvalue = value;
+				 }
+
+				 defvalue += reamrk;
+#>
+		private <#=type#> _<#=name#> = <#= defvalue#>
+        public <#=type#> <#=name#>
+        {
+            get{ return _<#=name#>;}
+            set{ Set(ref _<#=name#>, value);}
+        }
+
+<#
+			}			
+		} 
+		sr.Close();
+#>
+	}
+}

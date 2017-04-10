@@ -19,7 +19,8 @@
                         WindowState="Maximized" 
                         ShowSystemMenuOnRightClick="False" 
                         Icon="Images/1.ico" 
-                        Closing="MetroWindow_Closing" TitleAlignment="Center">
+                        Closing="MetroWindow_Closing" 
+                        TitleAlignment="Center">
     <controls:MetroWindow.DataContext>
         <Binding Path="Main" Source="{StaticResource Locator}"/>
     </controls:MetroWindow.DataContext>

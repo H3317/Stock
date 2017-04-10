@@ -155,7 +155,7 @@ namespace Stock.GetData
                     string tableName = Name.Substring(2);
                     if (DbHelperSqLite.Exists("select count(*) from sqlite_master where type='table' and name='DataReceived_" + tableName + "'"))
                     {
-                        if (DbHelperSqLite.Exists("select count(*) from DataReceived_" + tableName + " where tradedate = '" + Date + "' and status = 1"))
+                        if (DbHelperSqLite.Exists("select count(*) from DataReceived_" + tableName + " where tradedate = '" + Date + "' and status =1"))
                         {
                             Log.WriteLog("股票【" + tableName + "】【" + Date + "】的数据已获取，不必重新获取");
                             return;

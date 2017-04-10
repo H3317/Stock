@@ -44,6 +44,7 @@ namespace Stock.MViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
+            SimpleIoc.Default.Register<CurveView.CurveViewModel>();
         }
 
         public MainViewModel Main
@@ -61,7 +62,15 @@ namespace Stock.MViewModel
                 return ServiceLocator.Current.GetInstance<LoginViewModel>();
             }
         }
-        
+
+        public CurveView.CurveViewModel Curve
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<CurveView.CurveViewModel>();
+            }
+        }
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
