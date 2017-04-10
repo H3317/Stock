@@ -1,0 +1,104 @@
+﻿<controls:MetroWindow x:Class="Stock.Login.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Properties ="clr-namespace:Stock.Properties"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"        
+        xmlns:v="clr-namespace:Helper.LoginViews"
+        Title="{DynamicResource Login}" Height="320" Width="400" 
+                      TitlebarHeight="40"
+                      WindowStartupLocation="CenterScreen" 
+                      ResizeMode="NoResize" Background="#FFE7E9F1" 
+                      WindowStyle="None"
+                      TitleAlignment="Center"
+                      ShowCloseButton="False" 
+                      ShowSystemMenuOnRightClick="False" 
+                      ShowIconOnTitleBar="False" Icon="../Images/3.ico" 
+                      ContentRendered="MetroWindow_ContentRendered" 
+                      IsWindowDraggable="False" ShowInTaskbar="False" Closing="MetroWindow_Closing">
+    <controls:MetroWindow.DataContext>
+        <Binding Path="Login" Source="{StaticResource Locator}"/>
+    </controls:MetroWindow.DataContext>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
+                <Setter Property="Background" Value="#7FF7F7F7"/>
+                <Setter Property="Margin" Value="30 10"/>
+            </Style>
+            <Style TargetType="{x:Type TextBox}"  BasedOn="{StaticResource MetroTextBox}">
+                <Setter Property="controls:TextBoxHelper.ClearTextButton"
+                                    Value="True">
+                </Setter>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="FontSize" Value="26"/>
+                <Style.Triggers>
+                    <Trigger Property="controls:TextBoxHelper.HasText"
+                                         Value="False">
+                        <Setter Property="controls:TextBoxHelper.ClearTextButton"
+                                            Value="False" />
+                        <Setter Property="controls:TextBoxHelper.Watermark"
+                                            Value="{Binding RelativeSource={RelativeSource Self},Path=Tag}" />
+                    </Trigger>
+                    <Trigger Property="controls:TextBoxHelper.HasText"
+                                         Value="True">
+                        <Setter Property="controls:TextBoxHelper.ClearTextButton"
+                                            Value="True" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Row="1" Source="../Images/个人.png" Margin="12"/>
+        <Image Grid.Row="2" Source="../Images/解锁.png" Margin="12"/>
+        <!--<Label Content="{DynamicResource User}" Grid.Row="1" FontSize="26" VerticalContentAlignment="Center" Margin="10 0"/>-->
+        <!--<Label Content="{DynamicResource Pwd}" Grid.Row="2" FontSize="26" VerticalContentAlignment="Center" Margin="10 0"/>-->
+        <PasswordBox Name="pbpwd" Grid.Row="2" Grid.Column="1" 
+                     VerticalContentAlignment="Center"                      
+                     Grid.ColumnSpan="3" Margin="10" FontSize="26"
+                     controls:TextBoxHelper.Watermark="{DynamicResource Inputpwd}" 
+                     RenderTransformOrigin="0.5,0.5" 
+                     Background="Transparent" 
+                     BorderThickness="0,0,0,2" 
+                     v:PasswordBoxHelper.Attach="True"
+                     v:PasswordBoxHelper.Password="{Binding Strpwd, Mode=TwoWay}"
+                     BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" 
+                     Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"/>
+        <TextBox  Name="tbuser" Grid.Row="1" Grid.Column="1"
+                  Grid.ColumnSpan="3" Tag="{DynamicResource Inputuser}"                   
+                  Text="{Binding Struser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  VerticalContentAlignment="Center" 
+                  Background="Transparent" 
+                  BorderThickness="0,0,0,2" 
+                  BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" 
+                  Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" 
+                  TextChanged="tbuser_TextChanged" 
+                  controls:ControlsHelper.FocusBorderBrush="#FF6A5959"/>
+        <Button Name="btcancle" 
+                Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
+                Content="{DynamicResource Cancel}" IsCancel="True"/>
+        <Button Name="btok" 
+                Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" 
+                Content="{DynamicResource Login}" IsDefault="True"
+                Click="btok_Click"/>
+        <CheckBox Name="cbissaveuser" 
+                  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" 
+                  IsChecked="{Binding Source={x:Static Properties:Settings.Default},Path=chkissaveuser}"
+                  Margin="10 2" FontSize="20" Content="{DynamicResource RememberUser}" 
+                  RenderTransformOrigin="0.5,0.5" 
+                  Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+    </Grid>
+</controls:MetroWindow>

@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="Stock.ReportView.ReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+              Tag="TEST"
+             d:DesignHeight="400" d:DesignWidth="500">
+    <Grid>
+        <Button Height="20" Width="50" RenderTransformOrigin="2.7,0.52" Command="{Binding CloseCommand}" Margin="380,346,70,29">OK</Button>
+    </Grid>
+</UserControl>

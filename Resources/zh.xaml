@@ -1,0 +1,77 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <FontFamily x:Key="FontFamily">
+        SimSun
+    </FontFamily>
+    <sys:String x:Key="Titel">
+        股票分析
+    </sys:String>
+    <sys:String x:Key="User">
+        用  户
+    </sys:String>
+    <sys:String x:Key="Pwd">
+        密  码
+    </sys:String>
+    <sys:String x:Key="Inputuser">
+        输入用户
+    </sys:String>
+    <sys:String x:Key="Inputpwd">
+        输入密码
+    </sys:String>
+    <sys:String x:Key="Cancel">
+        取消
+    </sys:String>
+    <sys:String x:Key="Login">
+        登录
+    </sys:String>
+    <sys:String x:Key="Setting">
+        设置
+    </sys:String>
+    <sys:String x:Key="RememberUser">
+        记住用户名
+    </sys:String>
+    <sys:String x:Key="Lang">
+        English
+    </sys:String>
+    <sys:String x:Key="Flie">
+        文件
+    </sys:String>
+    <sys:String x:Key="Logout">
+        注销
+    </sys:String>
+    <sys:String x:Key="Data">
+        数据
+    </sys:String>
+    <sys:String x:Key="GetStockDetialData">
+        获取股票详细数据
+    </sys:String>
+    <sys:String x:Key="GetStockAllData">
+        获取全部股票代码
+    </sys:String>
+    <sys:String x:Key="GetStockBaseData">
+        获取股票基本代码
+    </sys:String>
+    <sys:String x:Key="Summary">
+        概要
+    </sys:String>
+    <sys:String x:Key="Exit">
+        退出
+    </sys:String>
+    <sys:String x:Key="IsExit">
+        是否退出？
+    </sys:String>
+    <sys:String x:Key="Yes">
+        是
+    </sys:String>
+    <sys:String x:Key="No">
+        否
+    </sys:String>
+    <sys:String x:Key="Coninfo">
+        确认信息
+    </sys:String>
+    <sys:String x:Key="Skin">
+        皮肤
+    </sys:String>
+    
+</ResourceDictionary>

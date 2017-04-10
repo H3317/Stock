@@ -1,0 +1,122 @@
+﻿<controls:MetroWindow   x:Class="Stock.MainWindow"        
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"        
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"             
+                        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"     
+                        xmlns:stock="clr-namespace:Stock"
+                        xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                        xmlns:reportView="clr-namespace:Stock.ReportView"
+                        xmlns:dataView="clr-namespace:Stock.DataView"
+                        xmlns:summary="clr-namespace:Stock.Summary"
+                        dialog:DialogParticipation.Register="{Binding}"
+                        Title="{DynamicResource Titel}"
+                        Height="500"
+                        Width="900"
+                        TitlebarHeight="40"
+                        Background="#FFBAF1F1"
+                        Loaded="MetroWindow_Loaded"
+                        WindowStartupLocation="CenterScreen"
+                        ContentRendered="MetroWindow_ContentRendered"
+                        WindowState="Maximized" 
+                        ShowSystemMenuOnRightClick="False" 
+                        Icon="Images/1.ico" 
+                        Closing="MetroWindow_Closing" TitleAlignment="Center">
+    <controls:MetroWindow.DataContext>
+        <Binding Path="Main" Source="{StaticResource Locator}"/>
+    </controls:MetroWindow.DataContext>
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <RoutedCommand x:Key="Click1" />
+            <RoutedCommand x:Key="Click2" />
+            <RoutedCommand x:Key="Click3" />
+            <RoutedCommand x:Key="Click4" />
+            <Ellipse x:Key="AccentMenuIcon"
+                     x:Shared="False"
+                     Width="16"
+                     Height="16"
+                     Fill="{Binding ColorBrush, Mode=OneWay}" />
+            <Style x:Key="AccentColorMenuItemStyle"
+                   TargetType="{x:Type MenuItem}"
+                   BasedOn="{StaticResource MetroMenuItem}">
+                <Setter Property="Command"
+                        Value="{Binding ChangeAccentCommand}" />
+                <Setter Property="Icon"
+                        Value="{StaticResource AccentMenuIcon}" />
+                <Setter Property="Header"
+                        Value="{Binding Name, Mode=OneWay}" />
+            </Style>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    <controls:MetroWindow.CommandBindings>
+        <CommandBinding Command="{StaticResource Click1}" Executed="MenuItem_Click_1"/>
+        <CommandBinding Command="{StaticResource Click2}" Executed="MenuItem_Click_2"/>
+        <CommandBinding Command="{StaticResource Click3}" Executed="MenuItem_Click_3"/>
+        <CommandBinding Command="{StaticResource Click4}" Executed="MenuItem_Click_4"/>
+    </controls:MetroWindow.CommandBindings>
+    <controls:MetroWindow.InputBindings>
+        <KeyBinding Key="F1" Command="{StaticResource Click1}"/>
+        <KeyBinding Key="F2" Command="{StaticResource Click2}"/>
+        <KeyBinding Key="F4" Command="{Binding ShowCustomDialogCommand}"/>
+        <KeyBinding Key="F3" Command="{StaticResource Click3}"/>
+    </controls:MetroWindow.InputBindings>
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Menu Background="{x:Null}">
+                <MenuItem ToolTip="{DynamicResource Skin}"
+                          ItemsSource="{Binding AccentColors, Mode=OneWay}"
+                          ItemContainerStyle="{StaticResource AccentColorMenuItemStyle}" Width="30" Height="30" 
+                          >
+                    <MenuItem.Background>
+                        <ImageBrush ImageSource="Images/skin.png" Stretch="Uniform"/>
+                    </MenuItem.Background>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource Setting}" Background="{x:Null}">
+                    <MenuItem Header="{DynamicResource Setting}" Click="MenuItem_Click"/>
+                    <MenuItem Header="{DynamicResource Lang}" Click="MenuItem_Click_5"/>
+                </MenuItem>
+            </Menu>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands>
+            <Menu Background="{x:Null}">
+                <MenuItem Header="{DynamicResource Flie}" Background="{x:Null}">
+                    <MenuItem Header="{DynamicResource Flie}" Command="{StaticResource Click1}"/>
+                    <MenuItem Header="{DynamicResource Logout}" Click="MenuItem_Click"/>
+                    <MenuItem Header="{DynamicResource Exit}" Click="MenuItem_Click_6"/>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource Data}" Background="{x:Null}">
+                    <MenuItem Header="{DynamicResource GetStockDetialData}" Command="{StaticResource Click2}"/>
+                    <MenuItem Header="{DynamicResource GetStockAllData}" Command="{StaticResource Click3}"/>
+                    <MenuItem Header="{DynamicResource GetStockBaseData}" Command="{StaticResource Click4}"/>
+                </MenuItem>
+                <MenuItem Header="show" Background="{x:Null}" 
+                          Command="{Binding ShowCustomDialogCommand}"/>
+            </Menu>
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.RowSpan="3" Grid.ColumnSpan="2"
+                    TabStripPlacement="Left">
+            <TabItem Header="{DynamicResource Summary}">
+                <summary:UserSummary DataContext="{Binding}"/>
+            </TabItem>
+            <TabItem Header="DataView">
+                <dataView:DataView DataContext="{Binding}" />
+            </TabItem>
+            <TabItem Header="ReportView">
+                <reportView:ReportView DataContext="{Binding}" />
+            </TabItem>
+        </TabControl>
+        <!--<ContentControl Name="contentcontrol1" Grid.RowSpan="3" Grid.ColumnSpan="2"/>-->
+    </Grid>
+</controls:MetroWindow>
